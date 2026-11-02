@@ -169,8 +169,13 @@ export default function CustomersPage() {
                           {c.initials}
                         </span>
                         <div>
-                          <p className="font-semibold text-slate-900">{c.name}</p>
-                          <p className="text-[11px] text-slate-400">{c.email}</p>
+
+<Link
+  href={`/customers/${c.initials.toLowerCase()}`}
+  className="font-semibold text-slate-900 hover:text-indigo-600 transition-colors"
+>
+  {c.name}
+</Link>                          <p className="text-[11px] text-slate-400">{c.email}</p>
                         </div>
                       </td>
                       <td className="py-4 px-3 text-slate-600 font-medium">{c.phone}</td>

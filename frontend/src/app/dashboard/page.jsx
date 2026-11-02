@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import Image from "next/image";
 
 const LOGO_SRC = "/upload/bg_logo.png";
@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
           {/* Navigation Links */}
           <nav className="space-y-1 text-sm font-medium">
-            <a
+            <Link
               href="/dashboard"
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white shadow-sm font-semibold"
             >
@@ -52,9 +52,9 @@ export default function DashboardPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
               Dashboard
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/customers"
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors"
             >
@@ -62,9 +62,9 @@ export default function DashboardPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               Customers
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="#"
               className="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors"
             >
@@ -75,9 +75,9 @@ export default function DashboardPage() {
                 <span>Expiring</span>
               </div>
               <span className="bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="#"
               className="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors"
             >
@@ -88,9 +88,9 @@ export default function DashboardPage() {
                 <span>Expired</span>
               </div>
               <span className="bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">2</span>
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="#"
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors"
             >
@@ -99,7 +99,7 @@ export default function DashboardPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               Settings
-            </a>
+            </Link>
           </nav>
         </div>
 
