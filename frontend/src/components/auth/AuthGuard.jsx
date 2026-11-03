@@ -17,6 +17,16 @@ function subscribeToAuthChanges(callback) {
     window.removeEventListener(AUTH_CHANGED_EVENT, callback);
   };
 }
+
+function getAuthSnapshot() {
+  try {
+    const auth = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY));
+    return auth?.loggedIn === true;
+  } catch {
+    return false;
+  }
+}
+
 export default function AuthGuard({ children }) {
   const router = useRouter();
 
