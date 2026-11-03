@@ -1,37 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-
-const LOGO_SRC = "/upload/bg_logo.png";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import CustomerAvatar from "@/components/ui/CustomerAvatar";
+import { customerDetails } from "@/data/customers";
+import { useCustomers } from "@/context/CustomerContext";
+import ReminderModal from "@/components/ui/ReminderModal";
 
 export default function CustomerDetailsPage({ params }) {
+  const { showToast, renewCustomer } = useCustomers();
   const [copiedField, setCopiedField] = useState(null);
   
   // Modal States
   const [isRenewModalOpen, setIsRenewModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
   
   // Renewal Form State
   const [renewalDuration, setRenewalDuration] = useState(3); // 3, 6, or 12 months
 
-  const customer = {
-    name: "John Smith",
-    initials: "JS",
-    customerSince: "Apr 8, 2026",
-    statusBadge: "Expiring · 3 days left",
-    daysLeft: 3,
-    startDate: "Jul 8, 2026",
-    expiresDate: "Oct 8, 2026",
-    duration: "3 months",
-    phone: "+1 555 012 3456",
-    email: "john@email.com",
-    renewals: [
-      { title: "Renewed for 3 months", period: "Jul 8, 2026 → Oct 8, 2026" },
-      { title: "First subscription · 3 months", period: "Apr 8, 2026 → Jul 8, 2026" },
-    ],
-  };
+  const customer = customerDetails;
 
   const calculateNewExpiry = (baseDateStr, months) => {
     const date = new Date(baseDateStr);
@@ -48,61 +37,7 @@ export default function CustomerDetailsPage({ params }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800 relative">
-      {/* ---------------- SIDEBAR ---------------- */}
-      <aside className="w-64 bg-slate-100/70 border-r border-slate-200 flex flex-col justify-between p-4 shrink-0">
-        <div className="space-y-6">
-          <div className="px-2 py-2">
-            <div className="relative w-36 h-14">
-              <Image src={LOGO_SRC} alt="Logo" fill className="object-contain object-left" />
-            </div>
-          </div>
-
-          <nav className="space-y-1 text-sm font-medium">
-            <Link href="/" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors">
-              <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-              Dashboard
-            </Link>
-
-            <Link href="/customers" className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white shadow-sm font-semibold">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-              Customers
-            </Link>
-
-            <Link href="/expiring" className="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors">
-              <div className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span>Expiring</span>
-              </div>
-              <span className="bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
-            </Link>
-
-            <Link href="/expired" className="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors">
-              <div className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                <span>Expired</span>
-              </div>
-              <span className="bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">2</span>
-            </Link>
-
-            <Link href="/settings" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-200/60 transition-colors">
-              <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
-              Settings
-            </Link>
-          </nav>
-        </div>
-
-        <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">AO</div>
-            <div className="text-xs">
-              <p className="font-semibold text-slate-800">Alex Owner</p>
-              <p className="text-slate-500">Business owner</p>
-            </div>
-          </div>
-          <button className="text-slate-400 hover:text-slate-600"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
-        </div>
-      </aside>
+    <DashboardLayout>
 
       {/* ---------------- MAIN CONTENT ---------------- */}
       <main className="flex-1 p-8 space-y-6 overflow-y-auto">
@@ -114,9 +49,7 @@ export default function CustomerDetailsPage({ params }) {
         {/* Header & Action Buttons */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <span className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-base shrink-0">
-              {customer.initials}
-            </span>
+            <CustomerAvatar initials={customer.initials} size="large" />
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">{customer.name}</h1>
@@ -134,8 +67,8 @@ export default function CustomerDetailsPage({ params }) {
               <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
               Edit
             </button>
-            <button className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 text-indigo-600 font-semibold text-xs hover:bg-indigo-100 transition-colors">
-              <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+            <button onClick={() => setIsReminderModalOpen(true)} className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 text-indigo-600 font-semibold text-xs hover:bg-indigo-100 transition-colors">
+              <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
               Send Reminder
             </button>
             <button
@@ -328,13 +261,26 @@ export default function CustomerDetailsPage({ params }) {
 
             <div className="flex justify-end gap-3 pt-2">
               <button onClick={() => setIsRenewModalOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50">Cancel</button>
-              <button onClick={() => setIsRenewModalOpen(false)} className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-sm">Confirm renewal</button>
+              <button onClick={() => {
+                renewCustomer(customer.id, renewalDuration);
+                setIsRenewModalOpen(false);
+              }} className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-sm">Confirm renewal</button>
             </div>
           </div>
         </div>
       )}
 
       {/* ---------------- DELETE MODAL ---------------- */}
+      {isReminderModalOpen && (
+        <ReminderModal
+          customer={{ ...customer, expires: customer.expiresDate }}
+          onClose={() => setIsReminderModalOpen(false)}
+          onConfirm={() => {
+            showToast("Reminder ready", `Message copied for ${customer.name}.`);
+            setIsReminderModalOpen(false);
+          }}
+        />
+      )}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md p-6 space-y-6">
@@ -361,6 +307,6 @@ export default function CustomerDetailsPage({ params }) {
           </div>
         </div>
       )}
-    </div>
+    </DashboardLayout>
   );
 }

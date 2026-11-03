@@ -1,5 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { CustomerProvider } from "@/context/CustomerContext";
+import GlobalToastContainer from "@/components/ui/GlobalToastContainer";
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,11 +22,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en">
+      {/* Add suppressHydrationWarning here */}
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <CustomerProvider>
+          {children}
+          <GlobalToastContainer />
+        </CustomerProvider>
+      </body>
     </html>
   );
 }
