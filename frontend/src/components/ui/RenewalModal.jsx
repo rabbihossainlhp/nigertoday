@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { X, RefreshCw, Check } from "lucide-react";
 
 export default function RenewalModal({ customer, onClose, onConfirm }) {
   const [months, setMonths] = useState(3);
@@ -14,54 +15,87 @@ export default function RenewalModal({ customer, onClose, onConfirm }) {
   });
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-2xl rounded-[28px] bg-white p-8 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-[600px] rounded-3xl bg-white p-6 shadow-2xl sm:p-8 animate-in fade-in zoom-in-95 duration-200">
+        {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-2xl text-indigo-600">↻</div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f0f0fc] text-[#5b45e0]">
+              <RefreshCw size={24} />
+            </div>
             <div>
               <h2 className="text-xl font-bold text-slate-900">Renew subscription</h2>
-              <p className="text-sm text-slate-400">{customer.name}</p>
+              <p className="text-sm text-slate-500">{customer.name}</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-2xl text-slate-400 hover:text-slate-600">×</button>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors p-1">
+            <X size={20} />
+          </button>
         </div>
 
-        <div className="mt-8 rounded-2xl border border-slate-100 bg-slate-50 p-5">
-          <p className="text-sm text-slate-400">Current expiry</p>
-          <p className="text-lg font-bold text-slate-900">{customer.expires}</p>
+        {/* Current Expiry */}
+        <div className="mt-8 flex items-center justify-between rounded-2xl bg-slate-50/80 p-5 border border-slate-100">
+          <div>
+            <p className="text-sm text-slate-500 mb-1">Current expiry</p>
+            <p className="font-bold text-slate-900">{customer.expires}</p>
+          </div>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-700">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+            {customer.daysLeft || 3} days left
+          </span>
         </div>
 
-        <h3 className="mt-7 text-sm font-bold text-slate-600">Renewal duration</h3>
-        <div className="mt-3 grid grid-cols-3 gap-3">
-          {[3, 6, 12].map((option) => (
-            <button
-              key={option}
-              onClick={() => setMonths(option)}
-              className={`rounded-2xl border p-4 text-left text-sm font-semibold ${
-                months === option
-                  ? "border-indigo-600 bg-indigo-50 text-slate-900 ring-1 ring-indigo-600"
-                  : "border-slate-200 text-slate-700 hover:bg-slate-50"
-              }`}
-            >
-              <span className={`mr-2 inline-block h-4 w-4 rounded-full border align-middle ${months === option ? "border-4 border-indigo-600" : "border-slate-300"}`} />
-              {option} months
-            </button>
-          ))}
+        {/* Duration Selection */}
+        <div className="mt-6">
+          <h3 className="text-sm font-semibold text-slate-700 mb-3">Renewal duration</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {[3, 6, 12].map((option) => (
+              <button
+                key={option}
+                onClick={() => setMonths(option)}
+                className={`flex items-center gap-2 rounded-xl border p-4 text-sm font-medium transition-colors ${
+                  months === option
+                    ? "border-[#5b45e0] bg-[#f0f0fc] text-[#5b45e0]"
+                    : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                <span
+                  className={`flex h-4 w-4 items-center justify-center rounded-full border ${
+                    months === option ? "border-[#5b45e0]" : "border-slate-300"
+                  }`}
+                >
+                  {months === option && <span className="h-2 w-2 rounded-full bg-[#5b45e0]"></span>}
+                </span>
+                {option} months
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-7 rounded-2xl border border-indigo-100 bg-indigo-50/60 p-5">
-          <p className="text-sm font-bold text-indigo-600">New expiration date</p>
-          <p className="mt-2 text-3xl font-black text-indigo-700">{newExpiry}</p>
+        {/* New Expiry Preview */}
+        <div className="mt-6 rounded-2xl bg-[#f0f0fc] p-5">
+          <p className="text-sm font-semibold text-[#5b45e0] mb-1">New expiration date</p>
+          <p className="text-3xl font-black text-[#5b45e0]">{newExpiry}</p>
         </div>
 
-        <p className="mt-7 text-center text-sm text-slate-400">
+        <p className="mt-6 text-center text-sm text-slate-500">
           Payment happens outside this app. Confirming only updates the customer record.
         </p>
 
+        {/* Footer Actions */}
         <div className="mt-8 flex justify-end gap-3">
-          <button onClick={onClose} className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
-          <button onClick={() => onConfirm(months)} className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">Confirm renewal</button>
+          <button
+            onClick={onClose}
+            className="rounded-xl border border-slate-200 px-6 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => onConfirm(months)}
+            className="flex items-center gap-2 rounded-xl bg-[#5b45e0] px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#4a36c4] transition-colors"
+          >
+            <Check size={16} /> Confirm renewal
+          </button>
         </div>
       </div>
     </div>

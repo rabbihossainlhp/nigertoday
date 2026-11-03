@@ -89,7 +89,7 @@ export default function Sidebar() {
       <aside className="hidden lg:flex w-64 bg-slate-100/70 border-r border-slate-200 flex-col justify-between p-4 shrink-0 min-h-screen">
         <div className="space-y-6">
           <div className="px-2 py-2">
-            <div className="relative w-28 h-12">
+            <div className="relative w-24 h-24">
               <Image
                 src={LOGO_SRC}
                 alt="NigerToday TV Logo"

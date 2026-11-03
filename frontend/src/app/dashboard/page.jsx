@@ -12,7 +12,7 @@ import ReminderModal from "@/components/ui/ReminderModal";
 import { AlertTriangle, MessageCircle, Search } from "lucide-react";
 
 export default function DashboardPage() {
-  const { showToast } = useCustomers();
+  const { showToast, renewCustomer } = useCustomers();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [modal, setModal] = useState(null);
   
@@ -232,7 +232,10 @@ export default function DashboardPage() {
           <RenewalModal 
             customer={selectedCustomer} 
             onClose={() => setModal(null)} 
-            onConfirm={() => setModal(null)} 
+            onConfirm={(months) => {
+              renewCustomer(selectedCustomer.id, months);
+              setModal(null);
+            }} 
           />
         )}
         {modal === "reminder" && (
