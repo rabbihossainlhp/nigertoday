@@ -1,14 +1,17 @@
 import { Suspense } from "react";
 import Sidebar from "./Sidebar";
+import AuthGuard from "@/components/auth/AuthGuard";
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800">
-      <Suspense fallback={<SidebarFallback />}>
-        <Sidebar />
-      </Suspense>
-      {children}
-    </div>
+    <AuthGuard>
+      <div className="flex min-h-screen bg-slate-50 text-slate-800">
+        <Suspense fallback={<SidebarFallback />}>
+          <Sidebar />
+        </Suspense>
+        {children}
+      </div>
+    </AuthGuard>
   );
 }
 

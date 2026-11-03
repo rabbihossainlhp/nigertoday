@@ -1,11 +1,40 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { AUTH_CHANGED_EVENT, AUTH_STORAGE_KEY } from "@/components/auth/AuthGuard";
 
 const LOGO_SRC = "/upload/bg_logo.png";
 const BG_SRC = "/upload/login_bg.jpg";
+const LOGIN_EMAIL = "owner@email.com";
+const LOGIN_PASSWORD = "owner123";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState(LOGIN_EMAIL);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem(AUTH_STORAGE_KEY) === "true") {
+      router.replace("/dashboard");
+    }
+  }, [router]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (email.trim().toLowerCase() !== LOGIN_EMAIL || password !== LOGIN_PASSWORD) {
+      setError("Invalid email or password.");
+      return;
+    }
+
+    localStorage.setItem(AUTH_STORAGE_KEY, "true");
+    window.dispatchEvent(new Event(AUTH_CHANGED_EVENT));
+    router.replace("/dashboard");
+  };
+
   return (
     <main className="min-h-screen w-full flex flex-col lg:flex-row bg-white font-inter" >
       {/* Left Side: Brand Showcase & Stats (Hidden on small screens, flex on large) */}
@@ -92,7 +121,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
                 Email or username
@@ -105,7 +134,9 @@ export default function LoginPage() {
                 </span>
                 <input
                   type="text"
-                  defaultValue="owner@email.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="email"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-slate-900 text-sm transition-all bg-slate-50/50"
                 />
               </div>
@@ -124,6 +155,9 @@ export default function LoginPage() {
                 <input
                   type="password"
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  autoComplete="current-password"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-slate-900 text-sm transition-all bg-slate-50/50"
                 />
               </div>
@@ -134,6 +168,8 @@ export default function LoginPage() {
                 Forgot password?
               </a>
             </div>
+
+            {error && <p className="text-sm text-rose-600">{error}</p>}
 
             <button
               type="submit"

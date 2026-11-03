@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCustomers } from "@/context/CustomerContext";
+import { AUTH_CHANGED_EVENT, AUTH_STORAGE_KEY } from "@/components/auth/AuthGuard";
 
 const LOGO_SRC = "/upload/bg_logo.png";
 
@@ -79,6 +80,8 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     setIsMoreMenuOpen(false);
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    window.dispatchEvent(new Event(AUTH_CHANGED_EVENT));
     showToast("Logged out", "You have been logged out successfully.", "success");
     router.push("/login");
   };
@@ -142,7 +145,7 @@ export default function Sidebar() {
         <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">
-              AO
+              AD
             </div>
             <div className="text-xs">
               <p className="font-semibold text-slate-800">Alex Owner</p>
