@@ -17,20 +17,33 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem(AUTH_STORAGE_KEY) === "true") {
+  try {
+    const auth = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY));
+
+    if (auth?.loggedIn === true) {
       router.replace("/dashboard");
     }
-  }, [router]);
+  } catch {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+  }
+}, [router]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (email.trim().toLowerCase() !== LOGIN_EMAIL || password !== LOGIN_PASSWORD) {
-      setError("Invalid email or password.");
-      return;
-    }
+if (!email.trim() || !password.trim()) {
+  setError("Email and password are required.");
+  return;
+}
 
-    localStorage.setItem(AUTH_STORAGE_KEY, "true");
+localStorage.setItem(
+  AUTH_STORAGE_KEY,
+  JSON.stringify({
+    email: email.trim(),
+    loggedIn: true,
+  })
+);
+
     window.dispatchEvent(new Event(AUTH_CHANGED_EVENT));
     router.replace("/dashboard");
   };

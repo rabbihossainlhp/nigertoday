@@ -17,7 +17,12 @@ function subscribeToAuthChanges(callback) {
 }
 
 function getAuthSnapshot() {
-  return localStorage.getItem(AUTH_STORAGE_KEY) === "true";
+  try{
+    const auth = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY));
+    return auth?.loggedIn === true;
+  }catch{
+    return false
+  }
 }
 
 export default function AuthGuard({ children }) {
@@ -25,11 +30,11 @@ export default function AuthGuard({ children }) {
   const pathname = usePathname();
   const isAuthenticated = useSyncExternalStore(subscribeToAuthChanges, getAuthSnapshot, () => false);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, pathname, router]);
+useEffect(() => {
+  if (!isAuthenticated) {
+    router.replace("/login");
+  }
+}, [isAuthenticated, router]);
 
   if (!isAuthenticated) {
     return <div className="min-h-screen bg-slate-50" />;

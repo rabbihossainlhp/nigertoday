@@ -237,7 +237,7 @@ export default function Sidebar() {
                 href="/expired"
                 onClick={() => setIsMoreMenuOpen(false)}
                 className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-700"
-              >
+              >1
                 <div className="flex items-center gap-3">
                   <NavigationIcon name="expired" active={pathname === "/expired"} />
                   Expired
