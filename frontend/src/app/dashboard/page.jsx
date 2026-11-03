@@ -61,9 +61,9 @@ export default function DashboardPage() {
                 className="pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
               />
             </div>
-            <button className="flex items-center gap-1.5 px-4 py-2 bg-[#5b45e0] hover:bg-[#4a36c4] text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
+            <Link href="/customers/new" className="flex items-center gap-1.5 px-4 py-2 bg-[#5b45e0] hover:bg-[#4a36c4] text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
               <span className="text-base font-normal leading-none">+</span> Add Customer
-            </button>
+            </Link>
           </div>
         </div>
 
