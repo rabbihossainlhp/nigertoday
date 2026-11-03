@@ -168,7 +168,7 @@ export default function Sidebar() {
       {/* ---------------- MOBILE BOTTOM NAVIGATION BAR ---------------- */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-6 py-2.5 flex items-center justify-between shadow-lg">
         <Link
-          href="/"
+          href="/dashboard"
           onClick={() => setIsMoreMenuOpen(false)}
           className={`flex flex-col items-center gap-1 text-[11px] font-medium transition-colors ${
             pathname === "/dashboard" ? "text-indigo-600 font-bold" : "text-slate-500"
@@ -220,13 +220,13 @@ export default function Sidebar() {
 
       {/* ---------------- MOBILE "MORE" POPUP DRAWER ---------------- */}
       {isMoreMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-30 bg-slate-900/40 backdrop-blur-xs flex flex-col justify-end">
+        <div className="lg:hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex flex-col justify-end">
           <div className="bg-white rounded-t-3xl p-6 space-y-4 shadow-2xl animate-in slide-in-from-bottom duration-200">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
               <h3 className="text-sm font-bold text-slate-900">More Navigation</h3>
               <button
                 onClick={() => setIsMoreMenuOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold"
+                className="text-slate-400 hover:text-slate-600 text-sm font-bold p-1"
               >
                 ✕
               </button>
@@ -237,7 +237,7 @@ export default function Sidebar() {
                 href="/expired"
                 onClick={() => setIsMoreMenuOpen(false)}
                 className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-700"
-              >1
+              >
                 <div className="flex items-center gap-3">
                   <NavigationIcon name="expired" active={pathname === "/expired"} />
                   Expired
